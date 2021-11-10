@@ -160,6 +160,22 @@ class UserService extends \JiraRestApi\JiraClient
         return $users;
     }
 
+    public function findUserByEmail($email)
+    {
+      $ret = $this->exec($this->uri.'/search?query='.$email, null);
+
+      $this->log->info("Result=\n".$ret);
+
+      $userData = json_decode($ret);
+
+      $user = $this->json_mapper->map(
+        $userData[0],
+        new User(),
+      );
+
+      return $user;
+    }
+
     /**
      * Delete a User.
      *
